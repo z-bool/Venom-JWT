@@ -79,7 +79,7 @@ func cmd() {
 		}
 		survey.AskOne(prompt, &payloadTypeStr)
 		payloadType = payloadTypeMap[payloadTypeStr]
-		if payloadType == 3 {
+		if payloadType == 3 || payloadType == 0 {
 			prompt := &survey.Input{
 				Message: "请输入您搜集的公钥pem的文件路径(最好为绝对路径)\n[·]",
 			}
