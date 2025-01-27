@@ -28,9 +28,9 @@
 go mod tidy
 cd cmd
 go build -o .
-
+```
 ---------运行--------
-cmd.exe -h # 默认打包名字
+cmd.exe -h  默认打包名字
 Usage of cmd.exe:
   -df string
         是否使用文件中的payload，默认为空使用角色内置字典（绑定模式2），模式3非空(绑定模式3)
