@@ -24,44 +24,6 @@
 
 <h3>使用说明</h3>
 ```bash
----------打包--------
-go mod tidy
-cd cmd
-go build -o .
-```
----------运行--------
-cmd.exe -h  默认打包名字
-Usage of cmd.exe:
-  -df string
-        是否使用文件中的payload，默认为空使用角色内置字典（绑定模式2），模式3非空(绑定模式3)
-  -em int
-        secret加密模式NONE/MD5/16位MD5/BASE64(默认ALL=>0,NONE=>1,MD5=>2,16位MD5=>3,BASE64)
-  -fs string
-        爆破的默认字典，可以自行按猜测的规则修改(配合-fz 位数使用) (default "abcdefghijklmnopqrstuvwxyz0123456789")
-  -fz int
-        字符爆破最大字符数（如果字符爆破要指定位数-fz）
-  -jbc string
-        需要修改的JWT body
-  -jm int
-        模式1：\(未知Secret\)修改Payload越权测试 模式2: (先测试模式1)PayloadFuzz越权测试 模式3：secret文本爆破 模式4：secret字符爆破（如果字符爆破要指定位数-fz）模式5：对JWT的Secret进行验证 (default 1)
-  -jwt.txt string
-        JWT字符串
-  -mz int
-        字符爆破最小字符数（如果字符爆破要指定位数-mz）,默认为1 (default 1)
-  -pem string
-        公钥pem的路径(最好绝对路径)
-  -pt int
-        选择模式：0为默认全执行，1为修改alg为none(CVE-2015-2951)，2为未验证签名导致的越权，3修改非对称密码算法为对称密码算法(CVE-2016-10555) 4为JWKS公钥注入--伪造密钥(CVE-2018-0114) 5 为空签名(CVE-2020-28042)
-  -s string
-        已知Secret，默认为空
-----也可以交互式填入参数-----
-cmd.exe
-? 【前置选择】未知secret的情况下修改JWT测试越权，请选择模式:
-[·]  [Use arrows to move, type to filter]
-> 模式1：(未知Secret)修改Payload越权测试
-  模式2：(先测试模式1)PayloadFuzz越权测试
-  模式3：secret文本爆破
-  模式4：secret字符爆破
-  模式5：对JWT的Secret进行验证
-----随后开启交互式参数填入---
+测试
+
 ```
