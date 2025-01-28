@@ -236,5 +236,10 @@ eyJraWQiOiJ5b3VyLWtleS1pZCIsImFsZyI6IkhTMjU2In0.eyJqdGkiOiI0MDAiLCJzdWIiOiJ0ZXN0
 <div id="communicate"></div>
 
 <h3>技术交流</h3>
+渗透服务类工具Github：https://github.com/z-bool **Venom系列**
+
+安全研究类项目Github：https://github.com/SpringKill-team **SpringKill Team**
+
+阿呆攻防公众号:
 
 <img src="https://cdn.jsdelivr.net/gh/z-bool/images@master/img/qrcode_for_gh_c90beef1e2e7_258.jpg" alt="阿呆攻防公众号" style="zoom:100%;" />
