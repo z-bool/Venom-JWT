@@ -128,6 +128,35 @@ JWT Signature: 563a9ae6f62ff6e454aa2690a6c0f196cc067cae67dae980a7e36b634a77f5b8
 **其余特殊漏洞发现：**
 
 在JWT的第一段解析时，如果发现出现其他参数，可能会产生其他漏洞会产生提示。
+```
+// Java的测试代码
+public class JwtExample {
+    private static void disableKeyLengthCheck() throws Exception {
+        // 使用反射修改 SignatureAlgorithm.HS256 的 minKeyLength
+        Field minKeyLengthField = SignatureAlgorithm.class.getDeclaredField("minKeyLength");
+        minKeyLengthField.setAccessible(true);
+        minKeyLengthField.set(SignatureAlgorithm.HS256, 0); // 将最小密钥长度设置为 0
+    }
+    public static void main(String[] args) throws Exception {
+        disableKeyLengthCheck();
+        // 原始密钥
+        String secret = "test@123";
+
+
+        JwtBuilder jwtBuilder = Jwts.builder().setHeaderParam("kid", "your-key-id").setId("400").setSubject("test").setAudience("{\"abc\":\"123\"}").signWith(SignatureAlgorithm.HS256, secret.getBytes());
+        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
+        stringObjectHashMap.put("test", "test");
+        jwtBuilder.addClaims(stringObjectHashMap);
+        System.out.println(jwtBuilder.compact());
+    }
+}
+```
+生成结果：
+eyJraWQiOiJ5b3VyLWtleS1pZCIsImFsZyI6IkhTMjU2In0.eyJqdGkiOiI0MDAiLCJzdWIiOiJ0ZXN0IiwiYXVkIjoie1wiYWJjXCI6XCIxMjNcIn0iLCJ0ZXN0IjoidGVzdCJ9.QhH2ACZXaoa3F5LIDAQVnhoCgsXWEIw44H7m6pO9bxM
+
+![jwtio](img/jwtio.png)
+
+![kid](img/kid.png)
 
 ![提示](img/tishi.png)
 
