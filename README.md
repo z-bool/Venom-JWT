@@ -186,4 +186,40 @@ KID也可以从数据库中提取数据，这时候就有可能造成SQL注入�
 ```
 {  "typ": "JWT",  "kid": "/path/to/key_file|whoami",  "alg": "HS256"}
 ```
+
 如果出现其他参数时候，也可以进行进一步分析。
+
+**再来看下爆破模块**
+
+随便网上找个字典。
+
+测试JWT1(*secret 123456*):
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhZG1pbiIsImlhdCI6MTcwMTM3NTE3NywiZXhwIjoxNzAxMzgyMzc3LCJuYmYiOjE3MDEzNzUxNzcsInN1YiI6InVzZXIiLCJqdGkiOiJhMDE3MDdmNDRmN2RmOGI1Y2JlNWUxMjlhMGY1YzMxMSJ9.Vjqa5vYv9uRUqiaQpsDxlswGfK5n2umAp-NrY0p39bg
+```
+
+![crack1](img/crackresult1.png)
+
+测试JWT2(*jjwt secret test@123*):
+```
+eyJraWQiOiJ5b3VyLWtleS1pZCIsImFsZyI6IkhTMjU2In0.eyJqdGkiOiI0MDAiLCJzdWIiOiJ0ZXN0IiwiYXVkIjoie1wiYWJjXCI6XCIxMjNcIn0iLCJ0ZXN0IjoidGVzdCJ9.QhH2ACZXaoa3F5LIDAQVnhoCgsXWEIw44H7m6pO9bxM
+```
+
+![crack2](img/crackresult2.png)
+
+然后用JWT1来测试字符生成的效果:
+
+![dict](img/dict.png)
+这里我生成的4-6位的所有字典，输入为1234567890，由于演示没必要搞太大，大家可以自行测试，反正包快的。
+
+![crack3](img/crackresult3.png)
+
+这里会在当前目录下生成`genFuzzDict.txt`，因为生成的量会很大，本来使用线程池+生产消费者模式去处理的，但是实际运行后在4位开始就会由于内存不足导致程序崩溃，于是改进为文本保存读取方式，在程序匹配到密钥的时候就会自行退出不再读取文件。
+
+再举例一个MD5的：
+
+```
+eyJraWQiOiJ5b3VyLWtleS1pZCIsImFsZyI6IkhTMjU2In0.eyJqdGkiOiI0MDAiLCJzdWIiOiJ0ZXN0IiwiYXVkIjoie1wiYWJjXCI6XCIxMjNcIn0iLCJ0ZXN0IjoidGVzdCJ9.cVkiZiHhiB4galgAh6EB_mrIOd3gPqqPsuXZq9S2MQw
+```
+
+![md5](img/md5.png)

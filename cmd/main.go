@@ -67,5 +67,7 @@ func main() {
 			fmt.Println("<red>[-]</>此JWT的secret不为: " + jwtSecret)
 		}
 	}
-	service.EndDeal(runPath)
+	if jwtModel == 1 || jwtModel == 2 {
+		service.EndDeal(runPath)
+	}
 }

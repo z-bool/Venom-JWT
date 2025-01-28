@@ -27,7 +27,7 @@ func command_line() {
 	flag.StringVar(&jwtString, "jwt.txt", "", "JWT字符串")
 	flag.IntVar(&payloadType, "pt", 0, "选择模式：0为默认全执行，1为修改alg为none(CVE-2015-2951)，2为未验证签名导致的越权，3修改非对称密码算法为对称密码算法(CVE-2016-10555) 4为JWKS公钥注入--伪造密钥(CVE-2018-0114) 5 为空签名(CVE-2020-28042)")
 	flag.IntVar(&jwtModel, "jm", 1, "模式1：(未知Secret)修改Payload越权测试 模式2: (先测试模式1)PayloadFuzz越权测试 模式3：secret文本爆破 模式4：secret字符爆破（如果字符爆破要指定位数-fz）模式5：对JWT的Secret进行验证")
-	flag.IntVar(&encryptModel, "em", 0, "secret加密模式NONE/MD5/16位MD5/BASE64(默认ALL=>0,NONE=>1,MD5=>2,16位MD5=>3,BASE64)")
+	flag.IntVar(&encryptModel, "em", 0, "secret加密模式NONE/MD5/16位MD5/BASE64(默认ALL=>0,NONE=>1,MD5=>2,16位MD5=>3,BASE64=>4)")
 	flag.IntVar(&maxSecretNum, "fz", 0, "字符爆破最大字符数（如果字符爆破要指定位数-fz）")
 	flag.IntVar(&minSecretNum, "mz", 1, "字符爆破最小字符数（如果字符爆破要指定位数-mz）,默认为1")
 	flag.StringVar(&dictFilePath, "df", "", "是否使用文件中的payload，默认为空使用角色内置字典（绑定模式2），模式3非空(绑定模式3)")
@@ -153,7 +153,7 @@ func cmd() {
 
 	}
 	if jwtModel == 3 || jwtModel == 4 {
-		var jwtModelMap = map[string]int{"ALL:进行所有的加密方式的爆破": 0, "NONE:原始Secret不加密": 1, "MD5:对Secret进行MD5加密": 3, "16MD5：对Secret进行16位MD5加密": 4, "Base64:对Secret进行Base64加密(JJWT)": 5}
+		var jwtModelMap = map[string]int{"ALL:进行所有的加密方式的爆破": 0, "NONE:原始Secret不加密": 1, "MD5:对Secret进行MD5加密": 2, "16MD5：对Secret进行16位MD5加密": 3, "Base64:对Secret进行Base64加密(JJWT)": 4}
 		encryptStr := ""
 		prompt := &survey.Select{
 			Message: "请选择secret的加密方式（默认ALL）:\n[·]",
