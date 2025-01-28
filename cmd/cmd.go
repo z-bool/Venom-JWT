@@ -6,10 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/gookit/color"
 	"github.com/schollz/progressbar/v3"
-	"os"
-	"strings"
 )
 
 var (
@@ -52,16 +49,6 @@ func cmd() {
 		}
 		survey.AskOne(prompt, &jwtModelStr)
 		jwtModel = jwtModelMap[jwtModelStr]
-	}
-	if jwtModel == 6 {
-		baseTxt := ""
-		prompt := &survey.Input{
-			Message: "请输入您要Base64转换的第一部分/第二部分数据\n" +
-				"示例：{\"typ\": \"JWT\",\"alg\": \"RS256\"}\n[·]",
-		}
-		survey.AskOne(prompt, &baseTxt)
-		color.Println("<magentaB>[+]</>编码后的数据为：" + utils.EncodeJWT(strings.TrimRight(baseTxt, "\t\n")))
-		os.Exit(1)
 	}
 	if jwtString == "" {
 		prompt := &survey.Input{
