@@ -129,7 +129,7 @@ JWT Signature: 563a9ae6f62ff6e454aa2690a6c0f196cc067cae67dae980a7e36b634a77f5b8
 
 在JWT的第一段解析时，如果发现出现其他参数，可能会产生其他漏洞会产生提示。
 ```
-// Java的测试代码
+// Java的jjwt测试代码
 public class JwtExample {
     private static void disableKeyLengthCheck() throws Exception {
         // 使用反射修改 SignatureAlgorithm.HS256 的 minKeyLength
