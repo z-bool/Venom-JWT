@@ -34,24 +34,39 @@ func ParseJWT(input string) (*model.Jwt, error) {
 	}
 	var parsedHeader model.JwtHeader
 	// 这里加入一步map处理为了验证是否存在其他字段
-	var dataMap map[string]interface{}
-	if err := json.Unmarshal(decodedParts[0], &dataMap); err != nil {
-		return nil, err
-	}
-	for key, _ := range dataMap {
-		if key != "alg" && key != "typ" {
-			color.Println("<lightRed>注意~Header中可能存在标头注入攻击点：【" + key + "】，请于jwt.io中分析</>")
-		}
+	// 解析 Header
+	header, err := parseHeader(decodedParts[0])
+
+	if err != nil {
+		return nil, fmt.Errorf("【ERROR】Header 解析失败：%v", err)
 	}
 	if err := json.Unmarshal(decodedParts[0], &parsedHeader); err != nil {
 		return nil, err
 	}
 	return &model.Jwt{
-		Header:    &parsedHeader,
-		Payload:   string(decodedParts[1]),
-		Message:   []byte(parts[0] + "." + parts[1]),
-		Signature: decodedParts[2],
+		RealHeader: header,
+		Header:     &parsedHeader,
+		Payload:    string(decodedParts[1]),
+		Message:    []byte(parts[0] + "." + parts[1]),
+		Signature:  decodedParts[2],
 	}, nil
+}
+
+// parseHeader 解析 JWT Header 并返回 map[string]interface{}
+func parseHeader(headerBytes []byte) (map[string]interface{}, error) {
+	var header map[string]interface{}
+	if err := json.Unmarshal(headerBytes, &header); err != nil {
+		return nil, err
+	}
+
+	// 检查是否存在额外字段
+	for key := range header {
+		if key != "alg" && key != "typ" {
+			color.Printf("<lightRed>注意~Header 中可能存在标头注入攻击点：【%s】，请于 jwt.io 中分析</>\n", key)
+		}
+	}
+
+	return header, nil
 }
 
 // 返回JWT的第一、三部分
