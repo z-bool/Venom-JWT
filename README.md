@@ -230,7 +230,7 @@ eyJraWQiOiJ5b3VyLWtleS1pZCIsImFsZyI6IkhTMjU2In0.eyJqdGkiOiI0MDAiLCJzdWIiOiJ0ZXN0
 <h3>注意事项</h3>
 
 - 根目录中的public_key.pem是测试`模式3：修改非对称密码算法为对称密码算法(CVE-2016-10555)`所必须填入的，如果页面JS中有泄露公钥的就使用页面中公钥保存的结果，如果没有就用这个进行替代来过一下生成，否则会报错
-- 这里的所有目录路径都设置为绝对路径防止文件读取的时候存在读取bug导致进程报错，Windows用户可以直接拖入文件自动补全绝对路径，mac/linx用户路径输入更为方便了就不再论述
+- 这里的所有目录路径都设置为绝对路径防止文件读取的时候存在读取bug导致进程报错，Windows用户可以直接拖入文件自动补全绝对路径，mac/linx用户路径输入更为方便了就不再论述。
 - 如果有其他BUG问题，可以在“阿呆攻防”公众号后台私聊留言，或ISSUE提交，后台联系我我看到会及时协助修复
 
 <div id="communicate"></div>
