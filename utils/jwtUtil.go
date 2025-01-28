@@ -43,6 +43,7 @@ func ParseJWT(input string) (*model.Jwt, error) {
 	if err := json.Unmarshal(decodedParts[0], &parsedHeader); err != nil {
 		return nil, err
 	}
+
 	return &model.Jwt{
 		RealHeader: header,
 		Header:     &parsedHeader,
@@ -96,7 +97,7 @@ func DecodeJWT(headerString string) string {
 
 // 解决指针问题只做拷贝
 func JwtCopy(jwt *model.Jwt) model.Jwt {
-	return model.Jwt{Header: jwt.Header, Payload: jwt.Payload, Message: jwt.Message, Signature: jwt.Signature}
+	return model.Jwt{RealHeader: jwt.RealHeader, Header: jwt.Header, Payload: jwt.Payload, Message: jwt.Message, Signature: jwt.Signature}
 }
 
 // 伪造密钥

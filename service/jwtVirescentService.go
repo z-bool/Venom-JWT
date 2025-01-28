@@ -20,14 +20,20 @@ import (
 var jwtArr = make([]string, 0)
 
 // 设置alg为none
-func setAlgNone(jwtObj model.Jwt, noneStr string) {
-	jwtObj.Header.SetAlgorithm(noneStr)
+func setAlgNone(jwtObj *model.Jwt, noneStr string) {
+
+	jwtObj.SetAlgorithm(noneStr)
 }
 
 // JWT为None的情况
 func jwtAlgNoneType(jwtObj model.Jwt, noneType string) {
-	setAlgNone(jwtObj, noneType)
-	var jwtStr = utils.EncodeJWT(jwtObj.Header.ToString()) + "." + utils.EncodeJWT(jwtObj.Payload) + "."
+	setAlgNone(&jwtObj, noneType)
+	headerStr, err := jwtObj.HeaderToString()
+	if err != nil {
+		color.Println("<red>[-]</> Error:" + err.Error())
+		return
+	}
+	var jwtStr = utils.EncodeJWT(headerStr) + "." + utils.EncodeJWT(jwtObj.Payload) + "."
 	jwtArr = append(jwtArr, jwtStr)
 	color.Println("<magentaB>[+]</>【alg为" + noneType + "】: <primary>" + jwtStr + "</>")
 }

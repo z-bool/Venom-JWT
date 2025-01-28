@@ -13,6 +13,10 @@ type Jwt struct {
 	Message, Signature []byte
 }
 
+func (receiver *Jwt) SetAlgorithm(alg string) {
+	receiver.RealHeader["alg"] = alg
+}
+
 func (receiver *Jwt) ToString() string {
 	toString, err := receiver.HeaderToString()
 	if err != nil {
