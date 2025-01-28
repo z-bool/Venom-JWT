@@ -223,3 +223,16 @@ eyJraWQiOiJ5b3VyLWtleS1pZCIsImFsZyI6IkhTMjU2In0.eyJqdGkiOiI0MDAiLCJzdWIiOiJ0ZXN0
 ```
 
 ![md5](img/md5.png)
+
+
+<div id="notice"></div>
+
+<h3>注意事项</h3>
+
+- 根目录中的public_key.pem是测试`模式3：修改非对称密码算法为对称密码算法(CVE-2016-10555)`所必须填入的，如果页面JS中有泄露公钥的就使用页面中公钥保存的结果，如果没有就用这个进行替代来过一下生成，否则会报错
+- 如果有其他BUG问题，可以在“阿呆攻防”公众号后台私聊留言，或ISSUE提交，后台联系我我看到会及时协助修复
+<div id="communicate"></div>
+
+<h3>技术交流</h3>
+
+<img src="https://cdn.jsdelivr.net/gh/z-bool/images@master/img/qrcode_for_gh_c90beef1e2e7_258.jpg" alt="阿呆攻防公众号" style="zoom:100%;" />
