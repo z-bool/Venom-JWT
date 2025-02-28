@@ -155,6 +155,34 @@ func GenRsaPrivKey() (*rsa.PrivateKey, *rsa.PublicKey, error) {
 	return privatekey, &privatekey.PublicKey, nil
 }
 
+// 将pem.pub直接进行转换
+func PEMToRSAPublicKey(pemStr string) (*rsa.PublicKey, error) {
+	// 解码PEM块
+	block, _ := pem.Decode([]byte(pemStr))
+	if block == nil {
+		return nil, fmt.Errorf("failed to decode PEM block containing the key")
+	}
+
+	// 检查是否是RSA公钥
+	if block.Type != "PUBLIC KEY" && block.Type != "RSA PUBLIC KEY" {
+		return nil, fmt.Errorf("key type is not RSA PUBLIC KEY")
+	}
+
+	// 解析DER编码的公钥
+	pubInterface, err := x509.ParsePKIXPublicKey(block.Bytes)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse DER encoded public key: %v", err)
+	}
+
+	// 断言为*rsa.PublicKey类型
+	pubKey, ok := pubInterface.(*rsa.PublicKey)
+	if !ok {
+		return nil, fmt.Errorf("not RSA public key")
+	}
+
+	return pubKey, nil
+}
+
 // 伪造密钥头部
 func GetHeadersB64(n, e string) string {
 	myJwk := model.Jwk{

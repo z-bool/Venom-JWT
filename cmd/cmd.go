@@ -58,17 +58,17 @@ func cmd() {
 	}
 	parseJWT()
 	if jwtModel == 1 || jwtModel == 2 {
-		var payloadTypeMap = map[string]int{"模式0：默认全执行": 0, "模式1：修改alg为none(CVE-2015-2951)": 1, "模式2：未验证签名导致的越权": 2, "模式3：修改非对称密码算法为对称密码算法(CVE-2016-10555)": 3, "模式4：JWKS公钥注入--伪造密钥(CVE-2018-0114)": 4, "模式5：空签名(CVE-2020-28042)": 5}
+		var payloadTypeMap = map[string]int{"模式0：默认全执行": 0, "模式1：修改alg为none(CVE-2015-2951)": 1, "模式2：未验证签名(无效签名攻击)导致的越权": 2, "模式3：修改非对称密码算法为对称密码算法(CVE-2016-10555)": 3, "模式4：JWKS公钥注入--伪造密钥(CVE-2018-0114)": 4, "模式5：空签名(CVE-2020-28042)": 5}
 		payloadTypeStr := ""
 		prompt := &survey.Select{
 			Message: "【模式1】【模式2】未知secret的情况下修改JWT测试越权，请选择具体测试模式:\n[·]",
-			Options: []string{"模式0：默认全执行", "模式1：修改alg为none(CVE-2015-2951)", "模式2：未验证签名导致的越权", "模式3：修改非对称密码算法为对称密码算法(CVE-2016-10555)", "模式4：JWKS公钥注入--伪造密钥(CVE-2018-0114)", "模式5：空签名(CVE-2020-28042)"},
+			Options: []string{"模式0：默认全执行", "模式1：修改alg为none(CVE-2015-2951)", "模式2：未验证签名(无效签名攻击)导致的越权", "模式3：修改非对称密码算法为对称密码算法(CVE-2016-10555)", "模式4：JWKS公钥注入--伪造密钥(CVE-2018-0114)", "模式5：空签名(CVE-2020-28042)"},
 		}
 		survey.AskOne(prompt, &payloadTypeStr)
 		payloadType = payloadTypeMap[payloadTypeStr]
 		if payloadType == 3 || payloadType == 0 {
 			prompt := &survey.Input{
-				Message: "请输入您搜集的公钥pem的文件路径(最好为绝对路径)，这里的公钥应该在前端逆向可以得到非我提供的版本，这个是选ALL和模式3必填项\n[·]",
+				Message: "请输入前端逆向获取的公钥pem文件保存的绝对路径。【若不输入，程序运行结果不可信】，【留空仅维持程序正常运行】 \n[·]",
 			}
 			survey.AskOne(prompt, &pemPath)
 		}
