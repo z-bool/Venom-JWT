@@ -39,6 +39,12 @@ func main() {
 	jwtCopy := utils.JwtCopy(jwt)
 	jwtCopy.Payload = jwtBodyChange
 
+	verify, encodeType := service.JWTWithAllTypeVerify(jwtString, "")
+	if verify {
+		fmt.Println("[+]空白密钥漏洞存在，加密方式为: " + encodeType)
+		return
+	}
+
 	if jwtModel == 1 {
 		// 越权修改测试
 		service.JwtChangeTest(jwtCopy, firstBodyStr, thirdBodyStr, payloadType, pemPath)
