@@ -56,6 +56,7 @@ func cmd() {
 		}
 		survey.AskOne(prompt, &jwtString)
 	}
+	checkEmptySecret()
 	parseJWT()
 	if jwtModel == 1 || jwtModel == 2 {
 		var payloadTypeMap = map[string]int{"模式0：默认全执行": 0, "模式1：修改alg为none(CVE-2015-2951)": 1, "模式2：未验证签名(无效签名攻击)导致的越权": 2, "模式3：修改非对称密码算法为对称密码算法(CVE-2016-10555)": 3, "模式4：JWKS公钥注入--伪造密钥(CVE-2018-0114)": 4, "模式5：空签名(CVE-2020-28042)": 5}

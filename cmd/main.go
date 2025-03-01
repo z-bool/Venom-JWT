@@ -19,6 +19,14 @@ var (
 	runPath                 = ""
 )
 
+func checkEmptySecret() {
+	verify, encodeType := service.JWTWithAllTypeVerify(jwtString, "")
+	if verify {
+		fmt.Println("[+]空白密钥漏洞存在，加密方式为: " + encodeType)
+		os.Exit(1)
+	}
+}
+
 func parseJWT() {
 	jwt, firstBodyStr, thirdBodyStr = service.JwtParseService(jwtString)
 	if len(firstBodyStr) == 0 || len(thirdBodyStr) == 0 {
@@ -38,12 +46,6 @@ func main() {
 	cmd()
 	jwtCopy := utils.JwtCopy(jwt)
 	jwtCopy.Payload = jwtBodyChange
-
-	verify, encodeType := service.JWTWithAllTypeVerify(jwtString, "")
-	if verify {
-		fmt.Println("[+]空白密钥漏洞存在，加密方式为: " + encodeType)
-		return
-	}
 
 	if jwtModel == 1 {
 		// 越权修改测试
