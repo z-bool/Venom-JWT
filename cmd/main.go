@@ -22,7 +22,7 @@ var (
 func checkEmptySecret() {
 	verify, encodeType := service.JWTWithAllTypeVerify(jwtString, "")
 	if verify {
-		fmt.Println("[+]空白密钥漏洞存在，加密方式为: " + encodeType)
+		color.Println("<magentaB>[+]空白密钥漏洞存在，加密方式为: " + encodeType + "</>\n")
 		os.Exit(1)
 	}
 }
@@ -36,7 +36,7 @@ func parseJWT() {
 func init() {
 	currentDir, err := os.Getwd()
 	if err != nil {
-		color.Println("<red>[-]</>" + err.Error() + "\n")
+		color.Println("<red>[-]</>" + err.Error() + "</>\n")
 	}
 	runPath = strings.ReplaceAll(currentDir, "\\", "/")
 }
@@ -70,7 +70,7 @@ func main() {
 	} else if jwtModel == 5 {
 		verify, s := service.JWTWithAllTypeVerify(jwtString, jwtSecret)
 		if verify {
-			color.Println("<magentaB>[+]</>此JWT的secret为 " + jwtSecret + "成功验证且加密方式为: " + s)
+			color.Println("<magentaB>[+]</>此JWT的secret为 " + jwtSecret + "成功验证且加密方式为: " + s + "</>")
 		} else {
 			fmt.Println("<red>[-]</>此JWT的secret不为: " + jwtSecret)
 		}
