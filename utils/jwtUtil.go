@@ -32,21 +32,14 @@ func ParseJWT(input string) (*model.Jwt, error) {
 			return nil, err
 		}
 	}
-	var parsedHeader model.JwtHeader
-	// 这里加入一步map处理为了验证是否存在其他字段
 	// 解析 Header
 	header, err := parseHeader(decodedParts[0])
 
 	if err != nil {
 		return nil, fmt.Errorf("【ERROR】Header 解析失败：%v", err)
 	}
-	if err := json.Unmarshal(decodedParts[0], &parsedHeader); err != nil {
-		return nil, err
-	}
-
 	return &model.Jwt{
 		RealHeader: header,
-		Header:     &parsedHeader,
 		Payload:    string(decodedParts[1]),
 		Message:    []byte(parts[0] + "." + parts[1]),
 		Signature:  decodedParts[2],
@@ -97,7 +90,7 @@ func DecodeJWT(headerString string) string {
 
 // 解决指针问题只做拷贝
 func JwtCopy(jwt *model.Jwt) model.Jwt {
-	return model.Jwt{RealHeader: jwt.RealHeader, Header: jwt.Header, Payload: jwt.Payload, Message: jwt.Message, Signature: jwt.Signature}
+	return model.Jwt{RealHeader: jwt.RealHeader, Payload: jwt.Payload, Message: jwt.Message, Signature: jwt.Signature}
 }
 
 // 伪造密钥
@@ -208,9 +201,13 @@ func GetHeadersB64(n, e string) string {
 }
 
 // 造一个HS256的标头
-func CreateHS256Header(jwtHeader *model.JwtHeader) string {
-	copyJwtHeader := model.JwtHeader{Algorithm: "HS256", Jwk: jwtHeader.Jwk, Type: "JWT"}
-	if headerBytes, err := json.Marshal(copyJwtHeader); err == nil {
+func CreateHS256Header(jwtHeader map[string]interface{}) string {
+	jwtHeader["alg"] = "HS256"
+	typ := jwtHeader["typ"]
+	if typ == nil {
+		jwtHeader["typ"] = "JWT"
+	}
+	if headerBytes, err := json.Marshal(jwtHeader); err == nil {
 		return EncodeJWT(string(headerBytes))
 	}
 	return ""

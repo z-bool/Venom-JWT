@@ -75,7 +75,7 @@ func JwtModifyAsymToSym(jwtObj model.Jwt, pemPath string) {
 		key = content.JWT_MODIFY_AS_TO_SYM
 	}
 
-	header := utils.CreateHS256Header(jwtObj.Header)
+	header := utils.CreateHS256Header(jwtObj.RealHeader)
 	payload := utils.EncodeJWT(jwtObj.Payload)
 
 	token := header + "." + payload

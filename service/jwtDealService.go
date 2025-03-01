@@ -63,7 +63,7 @@ func JwtChangeTest(jwt model.Jwt, firstBodyStr string, thirdBodyStr string, stat
 func JwtChangeFuzzTest(jwt model.Jwt, firstBodyStr string, thirdBodyStr string, state int, dictArr []string, pemPath string) {
 	color.Println("<lightRedB>==============没secret修改Payload的FUZZ越权测试===========</>\n")
 	for _, dictStr := range dictArr {
-		var copyJwt = model.Jwt{Header: jwt.Header, Payload: strings.Replace(jwt.Payload, "FUZZ", dictStr, -1), Message: jwt.Message, Signature: jwt.Signature}
+		var copyJwt = model.Jwt{RealHeader: jwt.RealHeader, Payload: strings.Replace(jwt.Payload, "FUZZ", dictStr, -1), Message: jwt.Message, Signature: jwt.Signature}
 		jwtChooseChangeTest(copyJwt, firstBodyStr, thirdBodyStr, state, pemPath)
 	}
 }

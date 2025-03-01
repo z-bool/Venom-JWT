@@ -8,7 +8,6 @@ import (
 
 type Jwt struct {
 	RealHeader         map[string]interface{}
-	Header             *JwtHeader
 	Payload            string
 	Message, Signature []byte
 }
