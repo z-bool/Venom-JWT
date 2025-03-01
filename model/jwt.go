@@ -17,6 +17,10 @@ func (receiver *Jwt) SetAlgorithm(alg string) {
 	receiver.RealHeader["alg"] = alg
 }
 
+func (receiver *Jwt) GetAlgorithm() string {
+	return receiver.RealHeader["alg"].(string)
+}
+
 func (receiver *Jwt) ToString() string {
 	toString, err := receiver.HeaderToString()
 	if err != nil {
