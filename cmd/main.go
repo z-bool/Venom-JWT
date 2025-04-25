@@ -58,7 +58,7 @@ func main() {
 		}
 		service.JwtChangeFuzzTest(jwtCopy, firstBodyStr, thirdBodyStr, payloadType, txtArr, pemPath)
 	} else if jwtModel == 3 {
-		service.CoJwtCrack(jwt, jwtString, encryptModel, dictFilePath)
+		service.CoJwtCrack(jwtString, encryptModel, dictFilePath)
 	} else if jwtModel == 4 {
 		if fuzzSecretKey != "" {
 			if maxSecretNum == 0 {
@@ -66,7 +66,7 @@ func main() {
 				os.Exit(1)
 			}
 		}
-		service.CoJwtCrack(jwt, jwtString, encryptModel, content.FUZZ_DICT_GEN_PATH)
+		service.CoJwtCrack(jwtString, encryptModel, content.FUZZ_DICT_GEN_PATH)
 	} else if jwtModel == 5 {
 		verify, s := service.JWTWithAllTypeVerify(jwtString, jwtSecret)
 		if verify {

@@ -58,7 +58,7 @@ func JwtWithNoCheck(firstBodyStr string, secondBodyStr string, thirdBodyStr stri
 
 // 修改非对称密码算法为对称密码算法(CVE-2016-10555)
 func JwtModifyAsymToSym(jwtObj model.Jwt, pemPath string) {
-	if strings.ToUpper(jwtObj.GetAlgorithm()) == "RS256" {
+	if strings.ToUpper(jwtObj.GetAlgorithm()) != "RS256" {
 		color.Println("\n<yellow>提示：</>该JWT非RS256不进行alg为HS256(CVE-2016-10555)的修改")
 		return
 	}
