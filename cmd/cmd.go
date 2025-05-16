@@ -24,7 +24,7 @@ var (
 )
 
 func command_line() {
-	flag.StringVar(&jwtString, "jwt.txt", "", "JWT字符串")
+	flag.StringVar(&jwtString, "jwtStr", "", "JWT字符串(eyxxxxxx.xxx.xxx)")
 	flag.IntVar(&payloadType, "pt", 0, "选择模式：0为默认全执行，1为修改alg为none(CVE-2015-2951)，2为未验证签名导致的越权，3修改非对称密码算法为对称密码算法(CVE-2016-10555) 4为JWKS公钥注入--伪造密钥(CVE-2018-0114) 5 为空签名(CVE-2020-28042)")
 	flag.IntVar(&jwtModel, "jm", 1, "模式1：(未知Secret)修改Payload越权测试 模式2: (先测试模式1)PayloadFuzz越权测试 模式3：secret文本爆破 模式4：secret字符爆破（如果字符爆破要指定位数-fz）模式5：对JWT的Secret进行验证")
 	flag.IntVar(&encryptModel, "em", 0, "secret加密模式NONE/MD5/16位MD5/BASE64(默认ALL=>0,NONE=>1,MD5=>2,16位MD5=>3,BASE64=>4)")
