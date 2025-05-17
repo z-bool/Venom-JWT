@@ -36,14 +36,14 @@ func command_line() {
 	flag.StringVar(&jwtBodyChange, "jbc", "", "需要修改的JWT body")
 	flag.StringVar(&jwtSecret, "s", "", "已知Secret，默认为空")
 	flag.StringVar(&pemPath, "pem", "", "公钥pem的路径(最好绝对路径)")
-	flag.BoolVar(&cmdline, "isCmd", false, "")
+	flag.BoolVar(&cmdline, "isCmd", false, "命令行参数运行必填true")
 	flag.Parse()
 }
 
 func cmd() {
-	if cmdline {
-		command_line()
-	} else {
+
+	command_line()
+	if !cmdline {
 
 		if jwtModel == 1 {
 			var jwtModelMap = map[string]int{"模式1：(未知Secret)修改Payload越权测试": 1, "模式2：(先测试模式1)PayloadFuzz越权测试": 2, "模式3：secret文本爆破": 3, "模式4：secret字符爆破": 4, "模式5：对JWT的Secret进行验证": 5}
@@ -168,5 +168,7 @@ func cmd() {
 			survey.AskOne(prompt, &encryptStr)
 			encryptModel = jwtModelMap[encryptStr]
 		}
+	} else {
+		parseJWT()
 	}
 }
