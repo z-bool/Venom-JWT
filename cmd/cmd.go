@@ -44,7 +44,6 @@ func cmd() {
 
 	command_line()
 	if !cmdline {
-
 		if jwtModel == 1 {
 			var jwtModelMap = map[string]int{"模式1：(未知Secret)修改Payload越权测试": 1, "模式2：(先测试模式1)PayloadFuzz越权测试": 2, "模式3：secret文本爆破": 3, "模式4：secret字符爆破": 4, "模式5：对JWT的Secret进行验证": 5}
 			jwtModelStr := ""
@@ -170,5 +169,26 @@ func cmd() {
 		}
 	} else {
 		parseJWT()
+		if minSecretNum == 0 {
+			minSecretNum = 1
+		}
+		if jwtModel == 4 {
+			combinations := utils.CalculateTotalCombinations(minSecretNum, maxSecretNum, fuzzSecretKey)
+			bar := progressbar.NewOptions(combinations,
+				progressbar.OptionSetWidth(15),                   // 设置进度条宽度
+				progressbar.OptionSetDescription("生成FUZZ字典中..."), // 设置描述
+				progressbar.OptionShowCount(),                    // 显示当前进度和总数
+				progressbar.OptionSetTheme(progressbar.Theme{
+					Saucer:        "=",
+					SaucerHead:    ">",
+					SaucerPadding: " ",
+					BarStart:      "[",
+					BarEnd:        "]",
+				}), // 自定义进度条样式
+			)
+			// 生成组合并写入文件
+			utils.GenerateCombinations(minSecretNum, maxSecretNum, fuzzSecretKey, content.FUZZ_DICT_GEN_PATH, bar)
+		}
+
 	}
 }
